@@ -485,11 +485,14 @@ function set_selection() {
 
 
 function createVideo(name) {
+    name = name + ".mp4"
+    if (/github/.test(document.host))
+    {name = "https://github.com/dodo/dodo.github.io/blob/master/"+name+"?raw=true"}
     var vid = document.createElement('video')
     var src = document.createElement('source')
     vid.setAttribute('loop', "loop")
     src.setAttribute('type', "video/mp4")
-    src.setAttribute('src', name + ".mp4")
+    src.setAttribute('src', name)
     vid.appendChild(src)
     document.body.appendChild(vid)
     return vid
