@@ -14,6 +14,33 @@ state.config = {
         "heartsim", "circulartree", "graphsubdiv",
     ],
 }
+var google_id = {
+    "3dlife": "1gs1m4oSH7YfRRvTSOBT6_xhv7InKNx4u",
+    "allcolors": "1mNgTU9hL_ELZFNt4r4unan7z6wldCzYr",
+    "bacteriathreads": "1UFTDxkKkGGfkOXhtKSUklPT1Hm2kpf1G",
+    "blueprint": "1TV8pRjXnvAF4dBWaK3FjMEWzwb5Exnpd",
+    "bodysim": "1bQXVmIuEpmYtS0ZnsJmRtxeg1EJfTq-E",
+    "bundesnetz": "1cNgGvVQf55FeBLW-MSR0yPkX-T4g5DfV",
+    "circulartree": "1xT7tFuVPFVNRIYuAaBYI3im7NYRs6u1R",
+    "clouds": "1yicyRTrgNvdbucnwikTM8MPW0-lQ8gPk",
+    "concepts": "1XoWFQrZh8t66OdFWvcLjXpAXmCkqOpTC",
+    "curves": "11rU_nMtaPmsDOt7YQa1D9h5AIKxPH0l1",
+    "custommotionvectors": "1qzJcLy7F_LyDNp-Ti3W-LH8ChZvBZVJM",
+    "eventfoo": "1wCzCiph7K0x2-DkP9Q5Bp8wkmbbQ110H",
+    "grapheditor": "14ZzRSI2MCTkjMUxNbKCJC88O4SF2_rbS",
+    "graphsubdiv": "12zXV88YpLghlQKqlpZZx7ZXjZkHXkmUq",
+    "heartsim": "1GGjil8M9q0OddbzWFLkTRLfpyWHuLB4f",
+    "hottnet": "1VQyObaasVoqjV_9ujI8WzWR2gpEkZx7k",
+    "lattice": "1Ri2zfdLOY8CNnzCYwYjDJ9vGEvoDgOyd",
+    "nncraft": "1RDCyV7MPRkcyx2Ydhm-SC-830jvGPmwh",
+    "nofish": "1EveSW7mF5s6ih0FR9BcpbC-7JcZCypbA",
+    "paralax": "1wsQ_-Od-LyLxzv5iGFVq-rsjOAiLlANA",
+    "random": "1GoH3OcChuMOJNgYJ0tw9pAkEH7Ak8P8e",
+    "space": "1H9rcpxJWn681EzM1YO1MLNyipY1ZwDoX",
+    "spheres": "1ybyGYzjWAyqgym9E71klJWW2AnCFbVsr",
+    "universe": "1gvhBWwAevEgEfdhvzfnTlzdR5FQnoZKV",
+    "voxellod": "1NE8rrgX88wwwi5tBMqT46GaaD38Epmjc",
+}
 var vec = {
     norm:function (v) {return vec.mul(v, 1/vec.mag(v))},
     ang:function (v) {return Math.atan2(v.y,v.x)},
@@ -486,12 +513,13 @@ function set_selection() {
 
 function createVideo(name) {
     if (/github/.test(document.location.host))
-    {name = "https://www.dropbox.com/sh/7p5sn9fnu4dopxi/AACaxkutAbMsEo_jtWMwpK2la/"+name}
+    {name = "https://drive.google.com/uc?authuser=0&export=download&id="+google_id[name]}
+    else {name += ".mp4"}
     var vid = document.createElement('video')
     var src = document.createElement('source')
     vid.setAttribute('loop', "loop")
     src.setAttribute('type', "video/mp4")
-    src.setAttribute('src', name + ".mp4")
+    src.setAttribute('src', name)
     vid.appendChild(src)
     document.body.appendChild(vid)
     return vid
