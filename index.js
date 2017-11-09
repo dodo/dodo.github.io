@@ -486,7 +486,7 @@ function set_selection() {
 
 function createVideo(name) {
     if (/github/.test(document.location.host))
-    {name = "https://media.githubusercontent.com/media/dodo/dodo.github.io/master/"+name}
+    {name = "https://www.dropbox.com/sh/7p5sn9fnu4dopxi/AACaxkutAbMsEo_jtWMwpK2la/"+name}
     var vid = document.createElement('video')
     var src = document.createElement('source')
     vid.setAttribute('loop', "loop")
