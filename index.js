@@ -394,6 +394,7 @@ function circles(ctx, center, ang, radius) {
     ctx.restore()
 }
 
+function vidloading(v) {return v.networkState === v.NETWORK_LOADING || v.readyState < v.HAVE_FUTURE_DATA} // The user agent is actively trying to download data.  or  There is not enough data to keep playing from this point
 function viddim(v) {return {x:v.videoWidth, y:v.videoHeight}}
 function vidtoggle(v,b) { var prom = undefined
          if ( v.paused &&  b) {prom = v.play()}
@@ -420,8 +421,7 @@ function triangle(ctx, vid, center, corner, color, active) {
         ctx.globalCompositeOperation = 'destination-over'
         ctx.drawImage(vid, v.x, v.y)
         vidtoggle(vid, active)
-        if (vid.networkState === vid.NETWORK_LOADING || vid.readyState < vid.HAVE_FUTURE_DATA) // The user agent is actively trying to download data.  or  There is not enough data to keep playing from this point
-        circles(ctx, center, vec.ang(vec.sub(state.mouse, center)), state.canvas.height*0.17*0.042)
+        if (vidloading(vid)) circles(ctx, center, vec.ang(vec.sub(state.mouse, center)), state.canvas.height*0.17*0.042)
     } else {
         ctx.fillStyle = color || 'white'
         ctx.beginPath()
@@ -465,6 +465,7 @@ function draw_selection() {var ctx = state.ctx
         ctx.globalCompositeOperation = 'copy'
     }
     triangle(ctx, 0, state.current.center, state.current.c, "rgba(255,255,255, 0.2)")
+    if (vidloading(state.current.v)) circles(ctx, state.current.center, vec.ang(vec.sub(state.mouse, state.current.center)), state.canvas.height*0.17*0.042)
 
 }
 
