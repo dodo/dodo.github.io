@@ -14,6 +14,7 @@ state.config = {
         "heartsim", "circulartree", "graphsubdiv",
     ],
 }
+window.state = state
 var google_id = {
     "3dlife": "1gs1m4oSH7YfRRvTSOBT6_xhv7InKNx4u",
     "allcolors": "1mNgTU9hL_ELZFNt4r4unan7z6wldCzYr",
@@ -41,6 +42,7 @@ var google_id = {
     "universe": "1gvhBWwAevEgEfdhvzfnTlzdR5FQnoZKV",
     "voxellod": "1NE8rrgX88wwwi5tBMqT46GaaD38Epmjc",
 }
+////////////////////////////////////////////////////////////////////////////////
 var vec = {
     norm:function (v) {return vec.mul(v, 1/vec.mag(v))},
     ang:function (v) {return Math.atan2(v.y,v.x)},
@@ -58,7 +60,6 @@ var vec = {
         return {x:c*v.x-s*v.y, y:s*v.x+c*v.y}
     },
 }
-window.state = state
 ////////////////////////////////////////////////////////////////////////////////
 function Node(id) {
     this.id = id
@@ -375,12 +376,22 @@ Input.prototype.ontouch = function (e) {
 }
 ////////////////////////////////////////////////////////////////////////////////
 
-function circle(ctx, center, radius, start, stop) {
+function circles(ctx, center, ang, radius) {
+    var y, t = (0.003*Date.now())%(Math.PI*2)
+    ctx.save()
+    ctx.translate(center.x, center.y)
+    ctx.rotate(ang || 0)
     ctx.beginPath()
-    ctx.strokeStyle = 'red'
-    ctx.arc(center.x, center.y, radius, start || 0, stop || (Math.PI*2))
-    ctx.stroke()
+    ctx.fillStyle = '#eee'
+    ctx.globalCompositeOperation = 'xor'
+    y = 2*radius*Math.cos(t)
+    ctx.arc(0, y, radius*(1+Math.sin(t)), 0, Math.PI*2)
+    y = 2*radius*Math.cos(t+Math.PI)
+    ctx.moveTo(0, y)
+    ctx.arc(0, y, radius*(1+Math.sin(t+Math.PI)), 0, Math.PI*2)
+    ctx.fill()
     ctx.closePath()
+    ctx.restore()
 }
 
 function viddim(v) {return {x:v.videoWidth, y:v.videoHeight}}
@@ -409,6 +420,8 @@ function triangle(ctx, vid, center, corner, color, active) {
         ctx.globalCompositeOperation = 'destination-over'
         ctx.drawImage(vid, v.x, v.y)
         vidtoggle(vid, active)
+        if (vid.networkState === vid.NETWORK_LOADING || vid.readyState < vid.HAVE_FUTURE_DATA) // The user agent is actively trying to download data.  or  There is not enough data to keep playing from this point
+        circles(ctx, center, vec.ang(vec.sub(state.mouse, center)), state.canvas.height*0.17*0.042)
     } else {
         ctx.fillStyle = color || 'white'
         ctx.beginPath()
@@ -471,7 +484,6 @@ function draw_menu() {var ctx = state.ctx
             ang += 1/3 ; v = vec.rot(v, Math.PI/3)
             triangle(ctx, state.videos[e++], vec.add(p[k],v), p[k], "rgba(255,255,255, 0.2)",  (ang >= ll-l/3 && ang <= lh-l/3))
         }
-//         circle(ctx, p[k], 66, Math.PI*ll, Math.PI*lh)
         l += 2 ; h +=1//= h%3+1
     })
 }
